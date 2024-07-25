@@ -4,11 +4,7 @@ import React, { useState } from "react";
 import { Input } from "@/src/components/ui/input";
 
 import { useAppDispatch, useAppSelector } from "@/src/redux/hooks/hook";
-import {
-  addTodo,
-  getTodos,
-  newTodoInterface,
-} from "@/src/redux/slices/todoSlice";
+import { addTodo, newTodoInterface } from "@/src/redux/slices/todoSlice";
 import { RootState } from "@/src/redux/store";
 import { Button } from "../ui/button";
 
@@ -22,9 +18,7 @@ export const TodoForm: React.FC<TodoFormProps> = () => {
   const [formData, setFormData] = useState<newTodoInterface>(initialValues);
 
   const dispatch = useAppDispatch();
-  const { loadingTodos } = useAppSelector(
-    (store: RootState) => store.todo
-  );
+  const { loadingTodos } = useAppSelector((store: RootState) => store.todo);
 
   const handleSubmit = async () => {
     await dispatch(addTodo(formData));
