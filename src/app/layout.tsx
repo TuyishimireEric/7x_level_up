@@ -4,8 +4,10 @@ import "./globals.css";
 import { cn } from "@/database/utils";
 import "animate.css";
 import Login from "@/src/components/login-btn";
-import Providers from "../redux/hooks/providers";
+import Providers from "../utils/providers";
 import { SessionProvider } from "../utils/SessionProvider";
+import { ThemeProvider } from "../components/theme-provider";
+
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -32,10 +34,17 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             <div className="w-1/5 min-h-screen bg-main border-r-2">
               <Login />
             </div>
             <div className="w-4/5 min-h-screen ">{children}</div>
+            </ThemeProvider>
           </Providers>
         </SessionProvider>
       </body>

@@ -1,22 +1,26 @@
 import React from "react";
-import { Todos } from "../components/todo/Todos";
+import { TodoList } from "../components/todo/TodoList";
 import { RiTodoLine } from "react-icons/ri";
-import { TodoForm } from "../components/todo/TodoForm";
+import { TodoForm } from "../components/todo/AddTodo";
 import { auth } from "../auth";
 import { SignIn } from "../components/sign-in";
+import { ModeToggle } from "../components/modeToggle";
 
 export default async function Home() {
   const session = await auth();
 
   return (
-    <main className="flex min-h-screen flex-col justify-between items-start gap-6 p-24 pb-12 px-40 border rounded-lg shadow-sm">
+    <main className="relative flex min-h-screen flex-col justify-between items-start gap-6 py-12 px-6 lg:p-24 lg:pb-12 lg:px-40 border rounded-lg shadow-sm">
+      <div className="absolute top-4 right-3 lg:top-12 lg:right-24">
+        <ModeToggle />
+      </div>
       {session?.user ? (
         <div className="flex-col gap-4 w-full">
           <h1 className="text-3xl font-bold mb-2">My Todo list</h1>
           <p className="text-sm flex items-center gap-2">
             <RiTodoLine size={14} /> Tasks todo
           </p>
-          <Todos />
+          <TodoList />
         </div>
       ) : (
         <div className="flex-col gap-4 w-full">

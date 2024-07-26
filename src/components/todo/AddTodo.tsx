@@ -2,11 +2,9 @@
 
 import React, { useState } from "react";
 import { Input } from "@/src/components/ui/input";
-
-import { useAppDispatch, useAppSelector } from "@/src/redux/hooks/hook";
-import { addTodo, newTodoInterface } from "@/src/redux/slices/todoSlice";
-import { RootState } from "@/src/redux/store";
 import { Button } from "../ui/button";
+import { newTodoInterface, addTodo } from "@/src/services/todoService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type TodoFormProps = {};
 
@@ -17,12 +15,17 @@ const initialValues: newTodoInterface = {
 export const TodoForm: React.FC<TodoFormProps> = () => {
   const [formData, setFormData] = useState<newTodoInterface>(initialValues);
 
-  const dispatch = useAppDispatch();
-  const { loadingTodos } = useAppSelector((store: RootState) => store.todo);
+  const queryClient = useQueryClient();
+  const addMutation = useMutation({
+    mutationFn: addTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      setFormData(initialValues);
+    },
+  });
 
   const handleSubmit = async () => {
-    await dispatch(addTodo(formData));
-    setFormData(initialValues);
+    addMutation.mutate(formData);
   };
 
   return (
@@ -42,7 +45,9 @@ export const TodoForm: React.FC<TodoFormProps> = () => {
           setFormData({ ...formData, description: e.target.value })
         }
       />
-      <Button disabled={loadingTodos}>Add task</Button>
+      <Button disabled={addMutation.isPending}>
+        {addMutation.isPending ? "loading ..." : "Add task"}
+      </Button>
     </form>
   );
 };
