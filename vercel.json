@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "public": "public",
+  "builds": [
+    {
+      "src": "next.config.js",
+      "use": "@vercel/next"
+    }
+  ]
+}
