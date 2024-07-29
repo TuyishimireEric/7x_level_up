@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as schema from "@/database/schema/schema";
+import * as schema from "@/src/database/schema/schema";
 import Joi from "joi";
 import { sendResponse } from "@/src/utils/response";
-import { db } from "@/database/db";
+import { db } from "@/src/database/db";
 import { auth } from "@/src/auth";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 const { todo } = schema;
 
@@ -16,10 +16,6 @@ export async function POST(req: NextRequest) {
   try {
     const session = await auth();
 
-    if (!session?.user) {
-      redirect("/api/auth/signin");
-    }
-
     const formData = await req.json();
 
     const { error } = todoSchema.validate(formData);
@@ -28,16 +24,19 @@ export async function POST(req: NextRequest) {
       return sendResponse(
         400,
         null,
-        "Error in creating todo! " + error.details[0].message
+        "Error in creating todo! " + error.details[0].message,
       );
     }
 
     const todos = await db
       .insert(todo)
-      .values({ ...formData, userId: session.user.id })
+      .values({ ...formData, userId: session?.user.id })
       .returning();
+
+    revalidatePath("/");
     return sendResponse(201, todos, "Todo added successfully!");
-  } catch (error) {
-    return sendResponse(500, null, "Error in creating todo! " + error.message);
+  } catch (error: unknown) {
+    const err = error as Error;
+    return sendResponse(500, null, "Error in deleting todo! " + err.message);
   }
 }

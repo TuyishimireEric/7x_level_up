@@ -1,10 +1,10 @@
 import { NextRequest } from "next/server";
-import * as schema from "@/database/schema/schema";
+import * as schema from "@/src/database/schema/schema";
 import { sendResponse } from "@/src/utils/response";
 import { and, eq } from "drizzle-orm";
-import { db } from "@/database/db";
-import { redirect } from "next/navigation";
+import { db } from "@/src/database/db";
 import { auth } from "@/src/auth";
+import { revalidatePath } from "next/cache";
 
 const { todo } = schema;
 
@@ -13,14 +13,14 @@ export async function DELETE(req: NextRequest) {
     const session = await auth();
 
     if (!session?.user) {
-      redirect("/api/auth/signin");
+      return sendResponse(401, null, "Unauthorized!");
     }
 
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
     if (!id) {
-      return sendResponse(500, null, "No Id provided");
+      return sendResponse(400, null, "No Id provided");
     }
 
     const result = await db
@@ -32,8 +32,10 @@ export async function DELETE(req: NextRequest) {
       return sendResponse(404, null, "Todo not found");
     }
 
+    revalidatePath("/");
     return sendResponse(200, result, "Todo deleted successfully!");
-  } catch (error) {
-    return sendResponse(500, null, "Error in deleting todo! " + error.message);
+  } catch (error: unknown) {
+    const err = error as Error;
+    return sendResponse(500, null, "Error in deleting todo! " + err.message);
   }
 }
