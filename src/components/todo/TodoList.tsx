@@ -1,24 +1,16 @@
-"use client";
-
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchTodos } from "../../services/todoService";
 import { TodoItem } from "./TodoItem";
 import { LoadingTask } from "./Loading";
+import { TodoInterface } from "@/src/types /todoTypes";
 
-type TodoPros = {};
+type TodoPros = {
+  data: TodoInterface[] | null;
+  error: Error | null;
+  isPending: boolean;
+};
 
-export const TodoList: React.FC<TodoPros> = () => {
-  const {
-    data: todos,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["todos"],
-    queryFn: fetchTodos,
-  });
-
-  if (isLoading) {
+export const TodoList: React.FC<TodoPros> = ({ error, data, isPending }) => {
+  if (isPending) {
     return (
       <ul className="flex flex-col gap-2 w-full mt-8 max-h-[calc(100vh*3/5)] overflow-y-auto">
         {Array.from({ length: 10 }).map((_, index) => (
@@ -28,15 +20,18 @@ export const TodoList: React.FC<TodoPros> = () => {
     );
   }
 
-  if (error) {
-    return <div>Error: {(error as Error).message}</div>;
+  if (error || data == null) {
+    return <div>error</div>;
   }
 
   return (
     <ul className="flex flex-col gap-2 w-full mt-8 py-3 max-h-[calc(100vh*3/5)] overflow-y-auto">
-      {todos?.map((todo, index) => (
-        <TodoItem key={index} todo={todo} />
-      ))}
+      {data
+        ?.sort(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        )
+        .map((todo, index) => <TodoItem key={index} todo={todo} />)}
     </ul>
   );
 };

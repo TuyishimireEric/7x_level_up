@@ -1,32 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "../ui/button";
-import { newTodoInterface, addTodo } from "@/src/services/todoService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import { useAddTodo } from "@/src/hooks";
 type TodoFormProps = {};
 
-const initialValues: newTodoInterface = {
-  description: "",
-};
-
 export const TodoForm: React.FC<TodoFormProps> = () => {
-  const [formData, setFormData] = useState<newTodoInterface>(initialValues);
-
-  const queryClient = useQueryClient();
-  const addMutation = useMutation({
-    mutationFn: addTodo,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
-      setFormData(initialValues);
-    },
-  });
-
-  const handleSubmit = async () => {
-    addMutation.mutate(formData);
-  };
+  const { formData, setFormData, handleSubmit, isPending } = useAddTodo();
 
   return (
     <form
@@ -40,13 +21,13 @@ export const TodoForm: React.FC<TodoFormProps> = () => {
         type="text"
         placeholder="Add todo..."
         value={formData.description}
-        className="bg-white text-md"
+        className="bg-white dark:bg-black text-md"
         onChange={(e) =>
           setFormData({ ...formData, description: e.target.value })
         }
       />
-      <Button disabled={addMutation.isPending}>
-        {addMutation.isPending ? "loading ..." : "Add task"}
+      <Button disabled={isPending}>
+        {isPending ? "loading ..." : "Add task"}
       </Button>
     </form>
   );

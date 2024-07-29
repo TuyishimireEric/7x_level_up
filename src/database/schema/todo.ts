@@ -23,5 +23,5 @@ export const todo = pgTable(
     return {
       uniqueIdx: uniqueIndex("unique_idx").on(todo.id),
     };
-  }
+  },
 );
