@@ -5,23 +5,23 @@ import {
   text,
   timestamp,
   uniqueIndex,
-} from "drizzle-orm/pg-core";
-import { users } from "./users";
+} from 'drizzle-orm/pg-core';
+import { users } from './users';
 
 export const todo = pgTable(
-  "todo",
+  'todo',
   {
-    id: serial("id").primaryKey(),
-    description: text("description").notNull(),
-    userId: text("user_id")
+    id: serial('id').primaryKey(),
+    description: text('description').notNull(),
+    userId: text('user_id')
       .notNull()
       .references(() => users.id),
-    completed: boolean("completed").default(false).notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    completed: boolean('completed').default(false).notNull(),
+    createdAt: timestamp('createdAt').defaultNow().notNull(),
   },
-  (todo) => {
+  todo => {
     return {
-      uniqueIdx: uniqueIndex("unique_idx").on(todo.id),
+      uniqueIdx: uniqueIndex('unique_idx').on(todo.id),
     };
-  },
+  }
 );

@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteTodo } from "@/src/services/todoService";
-import useToast from "@/src/components/alerts/alerts";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteTodo } from '@/src/services/todoService';
+import useToast from '@/src/components/alerts/alerts';
 
 export const useDeleteTodo = () => {
   const queryClient = useQueryClient();
@@ -8,17 +8,17 @@ export const useDeleteTodo = () => {
 
   const deleteMutation = useMutation({
     mutationFn: deleteTodo,
-    onSuccess: (response) => {
+    onSuccess: response => {
       if (response.success) {
-        showSuccess("Todo deleted successfully!");
-        queryClient.invalidateQueries({ queryKey: ["todos"] });
+        showSuccess('Todo deleted successfully!');
+        queryClient.invalidateQueries({ queryKey: ['todos'] });
       } else {
-        showError(response.error || "Error deleting todo");
+        showError(response.error || 'Error deleting todo');
       }
     },
     onError: (error: unknown) => {
       const err = error as Error;
-      showError(err.message || "Error deleting todo");
+      showError(err.message || 'Error deleting todo');
     },
   });
 

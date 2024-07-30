@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useTodos } from "../../hooks";
-import { TodoList } from "./TodoList";
+import React from 'react';
+import { useTodos } from '../../hooks';
+import { TodoList } from './TodoList';
 
 type TodoPros = {};
 

@@ -1,10 +1,10 @@
-import React from "react";
-import { RiTodoLine } from "react-icons/ri";
-import { TodoForm } from "../components/todo/AddTodo";
-import { auth } from "../auth";
-import { ModeToggle } from "../components/modeToggle";
-import { Todos } from "../components/todo/Todos";
-import { ToastContainer } from "react-toastify";
+import React from 'react';
+import { RiTodoLine } from 'react-icons/ri';
+import { TodoForm } from '../components/todo/AddTodo';
+import { auth } from '../auth';
+import { ModeToggle } from '../components/modeToggle';
+import { Todos } from '../components/todo/Todos';
+import { ToastContainer } from 'react-toastify';
 
 export default async function Home() {
   const session = await auth();

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Input } from "@/src/components/ui/input";
-import { Button } from "../ui/button";
-import { useAddTodo } from "@/src/hooks";
+import React from 'react';
+import { Input } from '@/src/components/ui/input';
+import { Button } from '../ui/button';
+import { useAddTodo } from '@/src/hooks';
 type TodoFormProps = {};
 
 export const TodoForm: React.FC<TodoFormProps> = () => {
@@ -11,7 +11,7 @@ export const TodoForm: React.FC<TodoFormProps> = () => {
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={e => {
         e.preventDefault();
         handleSubmit();
       }}
@@ -22,12 +22,12 @@ export const TodoForm: React.FC<TodoFormProps> = () => {
         placeholder="Add todo..."
         value={formData.description}
         className="bg-white dark:bg-black text-md"
-        onChange={(e) =>
+        onChange={e =>
           setFormData({ ...formData, description: e.target.value })
         }
       />
       <Button disabled={isPending}>
-        {isPending ? "loading ..." : "Add task"}
+        {isPending ? 'loading ...' : 'Add task'}
       </Button>
     </form>
   );

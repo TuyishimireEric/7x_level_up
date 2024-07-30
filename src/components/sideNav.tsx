@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useSession, signIn, signOut } from "next-auth/react";
-import Image from "next/image";
-import { Button } from "./ui/button";
+import { useSession, signIn, signOut } from 'next-auth/react';
+import Image from 'next/image';
+import { Button } from './ui/button';
 
-export default function Component() {
+export default function SideNav() {
   const { data: session } = useSession();
   if (session) {
     return (
@@ -14,7 +14,7 @@ export default function Component() {
             <Image
               src={
                 session.user?.image ||
-                "https://i.pinimg.com/736x/89/90/48/899048ab0cc455154006fdb9676964b3.jpg"
+                'https://i.pinimg.com/736x/89/90/48/899048ab0cc455154006fdb9676964b3.jpg'
               }
               alt="Product image"
               fill
@@ -40,14 +40,14 @@ export default function Component() {
         <div className="h-12 relative overflow-hidden w-12 rounded-full bg-black p-2 border-2 flex justify-center items-center">
           <Image
             src={
-              "https://i.pinimg.com/736x/89/90/48/899048ab0cc455154006fdb9676964b3.jpg"
+              'https://i.pinimg.com/736x/89/90/48/899048ab0cc455154006fdb9676964b3.jpg'
             }
             alt="Product image"
             fill
             className="object-cover transition-all rounded-full duration-300 hover:scale-105 animate__animated animate__faster animate__fadeIn"
           />
         </div>
-        <span className="flex flex-col items-start">
+        <span className="hidden lg:flex flex-col items-start">
           <p className="text-lg font-semibold truncate">Sign in</p>
           <p className="text-sm font-light truncate w-1/3"></p>
         </span>

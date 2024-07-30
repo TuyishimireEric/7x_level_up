@@ -1,12 +1,12 @@
-import React from "react";
-import { TodoInterface } from "@/src/types /todoTypes";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { Button } from "../ui/button";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-import { Input } from "@/src/components/ui/input";
-import { MdOutlineRadioButtonUnchecked } from "react-icons/md";
-import { GoCheckCircle } from "react-icons/go";
-import { useUpdateTodo, useDeleteTodo } from "@/src/hooks";
+import React from 'react';
+import { TodoInterface } from '@/src/types /todoTypes';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import { Button } from '../ui/button';
+import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
+import { Input } from '@/src/components/ui/input';
+import { MdOutlineRadioButtonUnchecked } from 'react-icons/md';
+import { GoCheckCircle } from 'react-icons/go';
+import { useUpdateTodo, useDeleteTodo } from '@/src/hooks';
 
 interface TodoItemProps {
   todo: TodoInterface;
@@ -36,9 +36,9 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
       </span>
       <Input
         value={edited || todo.description}
-        onChange={(e) => handleEditChange(e.target.value)}
+        onChange={e => handleEditChange(e.target.value)}
         className={`flex-grow p-1 text-sm md:text-lg border-0 ${
-          todo.completed && "line-through text-gray-600"
+          todo.completed && 'line-through text-gray-600'
         }`}
       />
       {edited === null ? (
@@ -49,7 +49,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
           onClick={() => handleDelete(todo.id)}
         >
           {deleteIsPending ? (
-            "loading ... "
+            'loading ... '
           ) : (
             <>
               <span className="hidden md:block test-xs pr-2 text-gray-700">
@@ -66,7 +66,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
           disabled={updateIsPending}
         >
           {updateIsPending ? (
-            "loading ... "
+            'loading ... '
           ) : (
             <>
               <span className="hidden md:block test-xs pr-2 text-gray-700">

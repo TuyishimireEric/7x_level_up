@@ -1,7 +1,7 @@
-import React from "react";
-import { TodoItem } from "./TodoItem";
-import { LoadingTask } from "./Loading";
-import { TodoInterface } from "@/src/types /todoTypes";
+import React from 'react';
+import { TodoItem } from './TodoItem';
+import { LoadingTask } from './Loading';
+import { TodoInterface } from '@/src/types /todoTypes';
 
 type TodoPros = {
   data: TodoInterface[] | null;
@@ -29,7 +29,7 @@ export const TodoList: React.FC<TodoPros> = ({ error, data, isPending }) => {
       {data
         ?.sort(
           (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         )
         .map((todo, index) => <TodoItem key={index} todo={todo} />)}
     </ul>

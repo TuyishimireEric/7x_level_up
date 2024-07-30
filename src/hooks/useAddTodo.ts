@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addTodo } from "@/src/services/todoService";
-import { newTodoInterface } from "@/src/types /todoTypes";
-import useToast from "@/src/components/alerts/alerts";
+import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addTodo } from '@/src/services/todoService';
+import { newTodoInterface } from '@/src/types /todoTypes';
+import useToast from '@/src/components/alerts/alerts';
 
 const initialValues: newTodoInterface = {
-  description: "",
+  description: '',
 };
 
 export const useAddTodo = () => {
@@ -17,18 +17,18 @@ export const useAddTodo = () => {
   const queryClient = useQueryClient();
   const addMutation = useMutation({
     mutationFn: addTodo,
-    onSuccess: (response) => {
+    onSuccess: response => {
       if (response.success) {
-        showSuccess("Todo added successfully!");
-        queryClient.invalidateQueries({ queryKey: ["todos"] });
+        showSuccess('Todo added successfully!');
+        queryClient.invalidateQueries({ queryKey: ['todos'] });
         setFormData(initialValues);
       } else {
-        showError(response.error || "Error adding todo");
+        showError(response.error || 'Error adding todo');
       }
     },
     onError: (error: unknown) => {
       const err = error as Error;
-      showError(err.message || "Error adding todo");
+      showError(err.message || 'Error adding todo');
     },
   });
 
