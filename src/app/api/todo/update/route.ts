@@ -1,19 +1,19 @@
-import * as schema from "@/database/schema/schema";
-import Joi from "joi";
+import * as schema from "@/src/database/schema/schema";
 import { sendResponse } from "@/src/utils/response";
 import { and, eq } from "drizzle-orm";
-import { db } from "@/database/db";
+import { db } from "@/src/database/db";
 import { auth } from "@/src/auth";
-import { redirect } from "next/navigation";
+import { NextRequest } from "next/server";
+import { revalidatePath } from "next/cache";
 
 const { todo } = schema;
 
-export async function PUT(req) {
+export async function PUT(req: NextRequest) {
   try {
     const session = await auth();
 
     if (!session?.user) {
-      redirect("/api/auth/signin");
+      return sendResponse(401, null, "Unauthorized!");
     }
 
     const { description, completed } = await req.json();
@@ -22,7 +22,7 @@ export async function PUT(req) {
     const id = searchParams.get("id");
 
     if (!id) {
-      return sendResponse(500, null, "No Id provided");
+      return sendResponse(400, null, "No Id provided");
     }
 
     const result = await db
@@ -35,8 +35,10 @@ export async function PUT(req) {
       return sendResponse(404, null, "Todo not found");
     }
 
+    revalidatePath("/");
     return sendResponse(200, result, "Todo Updated successfully!");
-  } catch (error) {
-    return sendResponse(500, null, "Error in updating todo! " + error.message);
+  } catch (error: unknown) {
+    const err = error as Error;
+    return sendResponse(500, null, "Error in deleting todo! " + err.message);
   }
 }

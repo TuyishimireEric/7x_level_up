@@ -5,16 +5,16 @@ import {
   text,
   primaryKey,
   integer,
-} from "drizzle-orm/pg-core"
-import postgres from "postgres"
-import { drizzle } from "drizzle-orm/postgres-js"
-import type { AdapterAccountType } from "next-auth/adapters"
- 
-const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle"
-const pool = postgres(connectionString, { max: 1 })
- 
-export const db = drizzle(pool)
- 
+} from "drizzle-orm/pg-core";
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
+import type { AdapterAccountType } from "next-auth/adapters";
+
+const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle";
+const pool = postgres(connectionString, { max: 1 });
+
+export const db = drizzle(pool);
+
 export const users = pgTable("user", {
   id: text("id")
     .primaryKey()
@@ -23,8 +23,8 @@ export const users = pgTable("user", {
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
-})
- 
+});
+
 export const accounts = pgTable(
   "account",
   {
@@ -46,17 +46,17 @@ export const accounts = pgTable(
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-  })
-)
- 
+  }),
+);
+
 export const sessions = pgTable("session", {
   sessionToken: text("sessionToken").primaryKey(),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
-})
- 
+});
+
 export const verificationTokens = pgTable(
   "verificationToken",
   {
@@ -68,9 +68,9 @@ export const verificationTokens = pgTable(
     compositePk: primaryKey({
       columns: [verificationToken.identifier, verificationToken.token],
     }),
-  })
-)
- 
+  }),
+);
+
 export const authenticators = pgTable(
   "authenticator",
   {
@@ -89,5 +89,5 @@ export const authenticators = pgTable(
     compositePK: primaryKey({
       columns: [authenticator.userId, authenticator.credentialID],
     }),
-  })
-)
+  }),
+);
